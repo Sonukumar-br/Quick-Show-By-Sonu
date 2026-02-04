@@ -1,5 +1,6 @@
 import stripe from "stripe";
 import Booking from '../models/Booking.js'
+import { inngest } from "../inngest/index.js";
 export const stripeWebhooks = async (request, response)=>{
   const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY);
   const sig = request.headers["stripe-signature"];
@@ -28,16 +29,23 @@ export const stripeWebhooks = async (request, response)=>{
             isPaid: true,
             paymentLink: ""
         })
-      }
+         
+        // Send Confirmation Email
+        await inngest.send({
+          name: "app/show.booked",
+          data: {bookingId}
+        })
+
 
       break;
+      }
 
       default:
               console.log('Unhandled event type:', event.type);
     }
     response.json({received: true})
   } catch (error) {
-    console.error("Webhook processing error:", err);
+    console.error("Webhook processing error:", error);
     response.status(500).send("Internal Server Error");
 
   }
