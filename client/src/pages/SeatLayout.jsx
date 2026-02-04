@@ -6,7 +6,7 @@ import { ArrowRightIcon, ClockIcon } from 'lucide-react';
 import isoTimeFormat from '../lib/isoTimeFormat';
 import BlurCircle from '../components/BlurCircle';
 import toast from 'react-hot-toast';
-import { useAppContext } from '../context/appContext';
+import { useAppContext } from '../context/AppContext';
 
 const SeatLayout = () => {
 
